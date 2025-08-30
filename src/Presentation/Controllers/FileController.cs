@@ -14,15 +14,15 @@ public class FileController : ControllerBase
         _useCase = useCase;
     }
 
-    [HttpPost("convert")]
-    public async Task<ActionResult> Convert(IFormFile file)
+    [HttpPost("PdfToDocx")]
+    public async Task<ActionResult> ConvertPdfToDocx(IFormFile file)
     {
         try
         {
             if (file.Length == 0) return BadRequest("Nenhum arquivo enviado.");
 
             var stream = file.OpenReadStream();
-            var result = await _useCase.ConvertToPdf(stream, "output.docx");
+            var result = await _useCase.ConvertToPdf(stream, file.FileName);
 
             return File(result.Content, result.ContentType, result.FileName);
         }

@@ -1,5 +1,4 @@
-using Application;
-using Application.UseCases;
+using Application.Config;
 using Infrastructure.Config;
 
 var builder = WebApplication.CreateBuilder(args);
