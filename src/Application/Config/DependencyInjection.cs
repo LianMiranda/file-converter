@@ -1,17 +1,12 @@
 using Application.UseCases;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application;
+namespace Application.Config;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddMediatR(x =>
-        {
-            x.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
-        });
-
         services.AddScoped<ConverterFileUseCase>();
 
         return services;
