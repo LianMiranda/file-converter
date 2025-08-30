@@ -1,9 +1,6 @@
 using Application.Interfaces;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
+using Aspose.Pdf;
 using Domain.Entities;
-using UglyToad.PdfPig;
 
 namespace Infrastructure.Converters;
 
@@ -11,43 +8,31 @@ public class PdfToDocxConverter : IFileConverter
 {
     public async Task<FileConversion> ConvertAsync(Stream inputStream, string fileName)
     {
-        using var pdf = PdfDocument.Open(inputStream);
-        
-        byte[] docxBytes;
-        
-        using (var ms = new MemoryStream())
+        try
         {
-            using (WordprocessingDocument doc =
-                   WordprocessingDocument.Create(ms, WordprocessingDocumentType.Document))
+            byte[] docxBytes;
+
+            using (var ms = new MemoryStream())
             {
-                MainDocumentPart mainPart = doc.AddMainDocumentPart();
-                mainPart.Document = new Document();
-
-                Body body = new Body();
-
-                foreach (var page in pdf.GetPages())
+                using (var document = new Aspose.Pdf.Document(inputStream))
                 {
-                    string txt = page.Text;
-                    Paragraph paragraph = new Paragraph();
-                    Run run = new Run();
-                    Text text = new Text(txt);
-                    
-                    run.Append(text);
-                    paragraph.Append(run);
-
-                    body.Append(paragraph);
+                    document.Save(ms, SaveFormat.DocX);
                 }
-                body.Append(new Paragraph());
-                mainPart.Document.Append(body);
+
+                docxBytes = ms.ToArray();
             }
 
-            docxBytes = ms.ToArray();
-        }
+            string outputFileName = Path.ChangeExtension(fileName, ".docx");
 
-        return new FileConversion(
-            fileName,
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            docxBytes
-        );
+            return new FileConversion(
+                outputFileName,
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                docxBytes
+            );
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException(e.Message);
+        }
     }
 }

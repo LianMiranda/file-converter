@@ -1,5 +1,6 @@
 namespace Domain.ValueObjects;
 
+//Tenho planos para isso depois
 public class FileFormat
 {
     public  string Format { get; }
