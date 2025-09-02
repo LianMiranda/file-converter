@@ -7,11 +7,13 @@ namespace conversor.Controllers;
 [Route("api/[controller]")]
 public class FileController : ControllerBase
 {
-    public ConverterFileUseCase _useCase;
+    private readonly ConverterPdfToDocxUseCase _converterPdfToDocxUseCase;
+    private readonly ConverterDocxToPdfUseCase _converterDocxToPdfUseCase;
 
-    public FileController(ConverterFileUseCase useCase)
+    public FileController(ConverterPdfToDocxUseCase converterPdfToDocxUseCase, ConverterDocxToPdfUseCase converterDocxToPdfUseCase)
     {
-        _useCase = useCase;
+        _converterPdfToDocxUseCase = converterPdfToDocxUseCase;
+        _converterDocxToPdfUseCase = converterDocxToPdfUseCase;
     }
 
     [HttpPost("PdfToDocx")]
@@ -22,7 +24,26 @@ public class FileController : ControllerBase
             if (file.Length == 0) return BadRequest("Nenhum arquivo enviado.");
 
             var stream = file.OpenReadStream();
-            var result = await _useCase.ConvertToPdf(stream, file.FileName);
+            var result = await _converterPdfToDocxUseCase.ConvertPdfToDocxAsync(stream, file.FileName);
+
+            return File(result.Content, result.ContentType, result.FileName);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    [HttpPost("DocxToPdf")]
+    public async Task<ActionResult> ConvertDocxToPdf(IFormFile file)
+    {
+        try
+        {
+            if (file.Length == 0) return BadRequest("Nenhum arquivo enviado.");
+
+            var stream = file.OpenReadStream();
+            var result = await _converterDocxToPdfUseCase.ConvertDocxToPdfAsync(stream, file.FileName);
 
             return File(result.Content, result.ContentType, result.FileName);
         }
