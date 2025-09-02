@@ -24,11 +24,13 @@ public class PdfToDocxConverter : IPdfToDocxConverter
 
             string outputFileName = Path.ChangeExtension(fileName, ".docx");
 
-            return new FileConversion(
+           var result = new FileConversion(
                 outputFileName,
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 docxBytes
             );
+
+            return await Task.FromResult(result);
         }
         catch (Exception e)
         {

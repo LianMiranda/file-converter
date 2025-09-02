@@ -22,11 +22,13 @@ public class DocxToPdfConverter : IDocxToPdfConverter
 
             string outputFileName = Path.ChangeExtension(fileName, ".pdf");
 
-            return new FileConversion(
+            var result = new FileConversion(
                 outputFileName,
                 "application/pdf",
                 docxBytes
             );
+
+            return await Task.FromResult(result);
         }
         catch (Exception e)
         {
