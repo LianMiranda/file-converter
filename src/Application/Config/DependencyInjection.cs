@@ -7,7 +7,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<ConverterFileUseCase>();
+        services.AddScoped<ConverterDocxToPdfUseCase>();
+        services.AddScoped<ConverterPdfToDocxUseCase>();
 
         return services;
     }

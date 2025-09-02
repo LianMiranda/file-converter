@@ -1,4 +1,4 @@
-using Application.Interfaces;
+using Domain.Interfaces;
 using Infrastructure.Converters;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +8,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddTransient<IFileConverter, PdfToDocxConverter>();
+        services.AddTransient<IPdfToDocxConverter, PdfToDocxConverter>();
+        services.AddTransient<IDocxToPdfConverter, DocxToPdfConverter>();
         return services;
     }
 }
