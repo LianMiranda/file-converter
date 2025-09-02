@@ -1,38 +1,37 @@
 using Domain.Interfaces;
-using Aspose.Pdf;
+using Aspose.Words;
 using Domain.Entities;
 
 namespace Infrastructure.Converters;
 
-public class PdfToDocxConverter : IPdfToDocxConverter
+public class DocxToPdfConverter : IDocxToPdfConverter
 {
     public async Task<FileConversion> ConvertAsync(Stream inputStream, string fileName)
     {
         try
         {
+            var document = new Document(inputStream);
+            
             byte[] docxBytes;
 
             using (var ms = new MemoryStream())
             {
-                using (var document = new Document(inputStream))
-                {
-                    document.Save(ms, SaveFormat.DocX);
-                }
-
+                document.Save(ms, SaveFormat.Pdf);
                 docxBytes = ms.ToArray();
             }
 
-            string outputFileName = Path.ChangeExtension(fileName, ".docx");
+            string outputFileName = Path.ChangeExtension(fileName, ".pdf");
 
             return new FileConversion(
                 outputFileName,
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "application/pdf",
                 docxBytes
             );
         }
         catch (Exception e)
         {
-            throw new InvalidOperationException(e.Message);
+            Console.WriteLine(e);
+            throw;
         }
     }
 }
