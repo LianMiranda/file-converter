@@ -1,8 +1,8 @@
 using Domain.Entities;
 
-namespace Application.Interfaces;
+namespace Domain.Interfaces;
 
-public interface IFileConverter
+public interface IDocxToPdfConverter
 {
     Task<FileConversion> ConvertAsync(Stream inputStream, string fileName);
 }
