@@ -1,8 +1,8 @@
-using Domain.Interfaces;
 using Aspose.Pdf;
 using Domain.Entities;
+using Domain.Interfaces;
 
-namespace Infrastructure.Converters;
+namespace Infrastructure.Converters.PdfFiles;
 
 public class PdfToDocxConverter : IPdfToDocxConverter
 {

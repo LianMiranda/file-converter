@@ -1,7 +1,7 @@
 using Domain.Entities;
 using Domain.Interfaces;
 
-namespace Application.UseCases;
+namespace Application.UseCases.PdfFilesUseCase;
 
 public class ConverterPdfToDocxUseCase
 {

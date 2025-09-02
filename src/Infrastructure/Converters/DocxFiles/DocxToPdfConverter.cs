@@ -1,8 +1,8 @@
-using Domain.Interfaces;
 using Aspose.Words;
 using Domain.Entities;
+using Domain.Interfaces;
 
-namespace Infrastructure.Converters;
+namespace Infrastructure.Converters.DocxFiles;
 
 public class DocxToPdfConverter : IDocxToPdfConverter
 {
